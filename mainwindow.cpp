@@ -9,7 +9,6 @@ MainWindow::MainWindow(QWidget *parent)
     Board myBoard;
     scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
-
 }
 
 void MainWindow::showBoard()
@@ -46,3 +45,15 @@ void MainWindow::on_pushButton_3_clicked()
     showBoard();
 }
 
+
+void MainWindow::on_pushButton_clicked()
+{
+    clearBoard();
+    myBoard.clearBoard();
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    myBoard.analyze();
+    showBoard();
+}

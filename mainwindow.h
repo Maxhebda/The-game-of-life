@@ -3,8 +3,7 @@
 
 #include <QMainWindow>
 #include <QGraphicsScene>
-//#include <QtCore>
-//#include <QtGui>
+#include "board.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,13 +16,18 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void showBoard();
+    void clearBoard();
 
 private slots:
     void on_pushButton_3_clicked();
 
-private:
+protected:
     Ui::MainWindow *ui;
+
+private:
     QGraphicsScene *scene;
     QGraphicsRectItem *rect;
+    Board myBoard;
 };
 #endif // MAINWINDOW_H

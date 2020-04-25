@@ -6,10 +6,32 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    Board myBoard;
     scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
-//    rect = scene->addRect(0,0,50,67);
 
+}
+
+void MainWindow::showBoard()
+{
+    QBrush blueCell(Qt::blue);
+    QPen bluePen(Qt::blue);
+    clearBoard();
+    for(unsigned short int i=0; i<100; i++)
+    {
+        for(unsigned short int j=0; j<100; j++)
+        {
+            if (myBoard.get(i,j))
+            {
+                rect = scene->addRect(1+i*5, 1+j*5, 3, 3, bluePen, blueCell);
+            }
+        }
+    }
+}
+
+void MainWindow::clearBoard()
+{
+    rect = scene->addRect(0, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
 }
 
 MainWindow::~MainWindow()
@@ -20,19 +42,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_3_clicked()
 {
-    rect = scene->addRect(0, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
-
-    QBrush blueCell(Qt::blue);
-    QPen bluePen(Qt::blue);
-    for (int i=0;i<100;i++)
-    {
-        for (int j=0;j<100;j++)
-        {
-            if (rand()%100<ui->spinBox->value())
-            {
-                rect = scene->addRect(1+i*5, 1+j*5, 3, 3, bluePen, blueCell);
-            }
-        }
-    }
+    myBoard.generateNewBoard(ui->spinBox->value());
+    showBoard();
 }
 

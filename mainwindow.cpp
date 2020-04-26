@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    connect(&timer,SIGNAL(timeout()),this, SLOT(step()));
     Board myBoard;
     scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
@@ -71,6 +72,33 @@ void MainWindow::on_pushButton_clicked()            // reset
 }
 
 void MainWindow::on_pushButton_2_clicked()          // next cycle
+{
+    myBoard.analyze();
+    showBoard();
+}
+
+void MainWindow::on_pushButton_5_clicked()
+{
+    ui->pushButton->setEnabled(0);
+    ui->pushButton_2->setEnabled(0);
+    ui->pushButton_3->setEnabled(0);
+    ui->pushButton_5->setEnabled(0);
+    ui->pushButton_4->setEnabled(1);
+    timer.setInterval(50);
+    timer.start();
+}
+
+void MainWindow::on_pushButton_4_clicked()
+{
+    ui->pushButton->setEnabled(1);
+    ui->pushButton_2->setEnabled(1);
+    ui->pushButton_3->setEnabled(1);
+    ui->pushButton_5->setEnabled(1);
+    ui->pushButton_4->setEnabled(0);
+    timer.stop();
+}
+
+void MainWindow::step()
 {
     myBoard.analyze();
     showBoard();

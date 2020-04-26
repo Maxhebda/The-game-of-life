@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     connect(&timer,SIGNAL(timeout()),this, SLOT(step()));
-    timer.setInterval(50);
+    timer.setInterval(20);
 //    timer.setSingleShot(false);
     Board myBoard;
     scene = new QGraphicsScene(this);
@@ -52,6 +52,7 @@ void MainWindow::showBoard()
 void MainWindow::clearBoard()
 {
     rect = scene->addRect(0, 0, 500, 500, QPen(Qt::white), QBrush(Qt::white));
+    scene->clear();
 }
 
 MainWindow::~MainWindow()

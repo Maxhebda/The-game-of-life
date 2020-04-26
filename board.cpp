@@ -56,39 +56,42 @@ void Board::generateNewBoard(unsigned short percent)
 
 void Board::analyze()
 {
-    // ------------ copy original board to temp and clear original
     OneCell temp[100][100];
-    for(unsigned short int i=0; i<100; i++)
-    {
-        for(unsigned short int j=0; j<100; j++)
-        {
-            temp[i][j].set(get(i,j));
-        }
-    }
-
     // ------------ analyzing the temp board and updating the original board
-    QVector <unsigned short int> tempNeighbors;
     for(unsigned short int i=0; i<100; i++)
     {
         for(unsigned short int j=0; j<100; j++)
         {
-            tempNeighbors = neighbors(i,j);     //find neighbors
-            if (temp[i][j].get()==0)
+            if (get(i,j)==0)
             {
                 //birth
-                if (tempNeighbors.size()==3)    //if he has exactly three neighbors then birth.
+                if (neighbors(i,j).size()==3)    //if he has exactly three neighbors then birth.
                 {
-                   set(i,j,mostNeigbors(tempNeighbors));
+                    temp[i][j].set(mostNeigbors(neighbors(i,j)));
                 }
             }
             else
             {
                 //dead
-                if (tempNeighbors.size()!=2 && tempNeighbors.size()!=3) //if he has 2 or 3 he is alive
+                if (neighbors(i,j).size()!=2 && neighbors(i,j).size()!=3) //if he has 2 or 3 he is alive
                 {                                                       //if it is less than 2 and more than 3 it dies
-                    set(i,j,0);
+                    temp[i][j].set(0);
+                }
+                else
+                {
+                    temp[i][j].set(get(i,j));
                 }
             }
+        }
+    }
+
+    // ------------ copy temp to original
+
+    for(unsigned short int i=0; i<100; i++)
+    {
+        for(unsigned short int j=0; j<100; j++)
+        {
+            set(i,j,temp[i][j].get());
         }
     }
 }
@@ -102,8 +105,10 @@ QVector<unsigned short int> Board::neighbors(unsigned short int i, unsigned shor
     if (i>0 && j>0) if (get(i-1,j-1)) temp.push_back(get(i-1,j-1));
     if (i>0)        if (get(i-1,j)) temp.push_back(get(i-1,j));
     if (i>0 && j<99)if (get(i-1,j+1)) temp.push_back(get(i-1,j+1));
+
     if (j>0)        if (get(i,j-1)) temp.push_back(get(i,j-1));
     if (j<99)       if (get(i,j+1)) temp.push_back(get(i,j+1));
+
     if (i<99&& j>0) if (get(i+1,j-1)) temp.push_back(get(i+1,j-1));
     if (i<99)       if (get(i+1,j)) temp.push_back(get(i+1,j));
     if (i<99&& j<99)if (get(i+1,j+1)) temp.push_back(get(i+1,j+1));

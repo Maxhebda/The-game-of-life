@@ -57,27 +57,20 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::on_pushButton_3_clicked()
+void MainWindow::on_pushButton_3_clicked()          // generate life
 {
     myBoard.generateNewBoard(ui->spinBox->value());
     showBoard();
 }
 
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_pushButton_clicked()            // reset
 {
-    clearBoard();
     myBoard.clearBoard();
-    myBoard.set(1,0,4);
-    myBoard.set(1,1,4);
-    myBoard.set(1,2,4);
-    myBoard.set(0,1,3);
-    myBoard.set(2,1,3);
-    ui->label_5->setText( QVariant(myBoard.mostNeigbors( myBoard.neighbors(2,1))).toString());
     showBoard();
 }
 
-void MainWindow::on_pushButton_2_clicked()
+void MainWindow::on_pushButton_2_clicked()          // next cycle
 {
     myBoard.analyze();
     showBoard();

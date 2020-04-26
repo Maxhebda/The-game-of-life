@@ -39,6 +39,8 @@ void Board::clearBoard()
             set(i,j,0); //all dead
         }
     }
+    populationCounter=0;
+    cycleCounter=0;
 }
 
 void Board::generateNewBoard(unsigned short percent)
@@ -49,7 +51,10 @@ void Board::generateNewBoard(unsigned short percent)
         for(unsigned short int j=0; j<100; j++)
         {
             if (rand()%100 < percent)
-            set(i,j,rand()%4+1);
+            {
+                set(i,j,rand()%4+1);
+                populationCounter++;
+            }
         }
     }
 }
@@ -87,13 +92,16 @@ void Board::analyze()
 
     // ------------ copy temp to original
 
+    populationCounter=0;
     for(unsigned short int i=0; i<100; i++)
     {
         for(unsigned short int j=0; j<100; j++)
         {
             set(i,j,temp[i][j].get());
+            if (get(i,j)) populationCounter++;
         }
     }
+    cycleCounter++;
 }
 
 QVector<unsigned short int> Board::neighbors(unsigned short int i, unsigned short int j)
@@ -133,4 +141,14 @@ unsigned short int Board::mostNeigbors(QVector<unsigned short int> n)
         }
     }
     return maxL;
+}
+
+unsigned int Board::getPopulationCounter()
+{
+    return populationCounter;
+}
+
+unsigned int Board::getCycleCounter()
+{
+    return cycleCounter;
 }

@@ -8,6 +8,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     connect(&timer,SIGNAL(timeout()),this, SLOT(step()));
+    timer.setInterval(50);
+//    timer.setSingleShot(false);
     Board myBoard;
     scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
@@ -15,9 +17,9 @@ MainWindow::MainWindow(QWidget *parent)
 
 void MainWindow::showBoard()
 {
-    QBrush blueCell(Qt::blue);
-    QPen bluePen(Qt::blue);
     clearBoard();
+    ui->label_2->setText(QVariant(myBoard.getPopulationCounter()).toString());
+    ui->label_5->setText(QVariant(myBoard.getCycleCounter()).toString());
     for(unsigned short int i=0; i<100; i++)
     {
         for(unsigned short int j=0; j<100; j++)
@@ -60,6 +62,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_3_clicked()          // generate life
 {
+    ui->pushButton->setEnabled(1);
+    ui->pushButton_3->setEnabled(0);
+    ui->pushButton_2->setEnabled(1);
+    ui->pushButton_5->setEnabled(1);
     myBoard.generateNewBoard(ui->spinBox->value());
     showBoard();
 }
@@ -67,6 +73,11 @@ void MainWindow::on_pushButton_3_clicked()          // generate life
 
 void MainWindow::on_pushButton_clicked()            // reset
 {
+    ui->pushButton_2->setEnabled(0);
+    ui->pushButton->setEnabled(0);
+    ui->pushButton_5->setEnabled(0);
+    ui->pushButton_4->setEnabled(0);
+    ui->pushButton_3->setEnabled(1);
     myBoard.clearBoard();
     showBoard();
 }
@@ -77,19 +88,20 @@ void MainWindow::on_pushButton_2_clicked()          // next cycle
     showBoard();
 }
 
-void MainWindow::on_pushButton_5_clicked()
+void MainWindow::on_pushButton_5_clicked()          // start
 {
+    ui->spinBox->setEnabled(0);
     ui->pushButton->setEnabled(0);
     ui->pushButton_2->setEnabled(0);
     ui->pushButton_3->setEnabled(0);
     ui->pushButton_5->setEnabled(0);
     ui->pushButton_4->setEnabled(1);
-    timer.setInterval(50);
     timer.start();
 }
 
-void MainWindow::on_pushButton_4_clicked()
+void MainWindow::on_pushButton_4_clicked()          //stop
 {
+    ui->spinBox->setEnabled(1);
     ui->pushButton->setEnabled(1);
     ui->pushButton_2->setEnabled(1);
     ui->pushButton_3->setEnabled(1);

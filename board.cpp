@@ -49,14 +49,14 @@ void Board::generateNewBoard(unsigned short percent)
         for(unsigned short int j=0; j<100; j++)
         {
             if (rand()%100 < percent)
-            set(i,j,1);                                             //only blue
+            set(i,j,rand()%4+1);
         }
     }
 }
 
 void Board::analyze()
 {
-    // ------------ copy oryginal board
+    // ------------ copy original board to temp and clear original
     OneCell temp[100][100];
     for(unsigned short int i=0; i<100; i++)
     {
@@ -76,12 +76,18 @@ void Board::analyze()
             if (temp[i][j].get()==0)
             {
                 //birth
-
+                if (tempNeighbors.size()==3)    //if he has exactly three neighbors then birth.
+                {
+                   set(i,j,mostNeigbors(tempNeighbors));
+                }
             }
             else
             {
                 //dead
-
+                if (tempNeighbors.size()!=2 && tempNeighbors.size()!=3) //if he has 2 or 3 he is alive
+                {                                                       //if it is less than 2 and more than 3 it dies
+                    set(i,j,0);
+                }
             }
         }
     }
@@ -92,5 +98,34 @@ QVector<unsigned short int> Board::neighbors(unsigned short int i, unsigned shor
     QVector<unsigned short int> temp;
     temp.clear();
 
+    //find 8 neigbors  - only life neigbors (status>0)
+    if (i>0 && j>0) if (get(i-1,j-1)) temp.push_back(get(i-1,j-1));
+    if (i>0)        if (get(i-1,j)) temp.push_back(get(i-1,j));
+    if (i>0 && j<99)if (get(i-1,j+1)) temp.push_back(get(i-1,j+1));
+    if (j>0)        if (get(i,j-1)) temp.push_back(get(i,j-1));
+    if (j<99)       if (get(i,j+1)) temp.push_back(get(i,j+1));
+    if (i<99&& j>0) if (get(i+1,j-1)) temp.push_back(get(i+1,j-1));
+    if (i<99)       if (get(i+1,j)) temp.push_back(get(i+1,j));
+    if (i<99&& j<99)if (get(i+1,j+1)) temp.push_back(get(i+1,j+1));
     return temp;
+}
+
+unsigned short int Board::mostNeigbors(QVector<unsigned short int> n)
+{
+    unsigned short int temp[5] = {0};
+    for (auto iter=n.begin();iter!=n.end();iter++)
+    {
+        temp[*iter]++;
+    }
+    unsigned short int maxN=temp[1];
+    unsigned short int maxL=1;  //blue
+    for (unsigned short int i=2;i<5;i++)
+    {
+        if (maxN<temp[i])
+        {
+            maxN=temp[i];
+            maxL=i;
+        }
+    }
+    return maxL;
 }

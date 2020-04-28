@@ -131,7 +131,8 @@ unsigned short int Board::mostNeigbors(QVector<unsigned short int> n)
         temp[*iter]++;
     }
     unsigned short int maxN=temp[1];
-    unsigned short int maxL=1;  //blue
+    unsigned short int maxL=1;              //predominat color
+    unsigned short int minL=1;              //other color
     for (unsigned short int i=2;i<5;i++)
     {
         if (maxN<temp[i])
@@ -139,8 +140,13 @@ unsigned short int Board::mostNeigbors(QVector<unsigned short int> n)
             maxN=temp[i];
             maxL=i;
         }
+        if (temp[i]==0)
+            minL = i;           //other color that doesn't exist
     }
-    return maxL;
+    if (maxN == 1)
+        return minL;
+    else
+        return maxL;
 }
 
 unsigned int Board::getPopulationCounter()

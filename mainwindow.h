@@ -5,6 +5,7 @@
 #include <QGraphicsScene>
 #include "board.h"
 #include "QTimer"
+#include "gameobjects.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -33,6 +34,8 @@ private slots:
 
     void step();
 
+    void on_comboBox_activated(const QString &arg1);
+
 protected:
     Ui::MainWindow *ui;
 
@@ -41,5 +44,7 @@ private:
     QGraphicsRectItem *rect;
     Board myBoard;
     QTimer timer;
+    GameObjects myObjects;
+    void loadComboItems();
 };
 #endif // MAINWINDOW_H

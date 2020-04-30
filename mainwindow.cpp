@@ -13,6 +13,15 @@ MainWindow::MainWindow(QWidget *parent)
     Board myBoard;
     scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
+    loadComboItems();
+}
+
+void MainWindow::loadComboItems()
+{
+    for (unsigned short int a=0 ; a<myObjects.oCounter ; a++)
+    {
+        ui->comboBox->addItem(myObjects.oname(a));
+    }
 }
 
 void MainWindow::showBoard()
@@ -44,6 +53,10 @@ void MainWindow::showBoard()
                         break;
                     }
                 }
+            }
+            else
+            {
+                rect = scene->addRect(1+j*5,1+i*5, 3, 3, QPen(Qt::white), QBrush(Qt::white));
             }
         }
     }
@@ -79,6 +92,7 @@ void MainWindow::on_pushButton_clicked()            // reset
     ui->pushButton_5->setEnabled(0);
     ui->pushButton_4->setEnabled(0);
     ui->pushButton_3->setEnabled(1);
+    ui->comboBox->setEnabled(1);
     myBoard.clearBoard();
     showBoard();
 }
@@ -97,6 +111,7 @@ void MainWindow::on_pushButton_5_clicked()          // start
     ui->pushButton_3->setEnabled(0);
     ui->pushButton_5->setEnabled(0);
     ui->pushButton_4->setEnabled(1);
+    ui->comboBox->setEnabled(0);
     timer.start();
 }
 
@@ -108,6 +123,7 @@ void MainWindow::on_pushButton_4_clicked()          //stop
     ui->pushButton_3->setEnabled(1);
     ui->pushButton_5->setEnabled(1);
     ui->pushButton_4->setEnabled(0);
+    ui->comboBox->setEnabled(1);
     timer.stop();
 }
 
@@ -115,4 +131,19 @@ void MainWindow::step()
 {
     myBoard.analyze();
     showBoard();
+}
+
+void MainWindow::on_comboBox_activated(const QString &arg1)
+{
+    myBoard.clearBoard();
+    unsigned short int nr = myObjects.onr(arg1);
+    myBoard.loadObject((100-myObjects.oy(nr))/2, (100-myObjects.ox(nr))/2, myObjects.oy(nr), myObjects.ox(nr), myObjects.oarray(nr));
+
+    showBoard();
+    ui->spinBox->setEnabled(1);
+    ui->pushButton->setEnabled(1);
+    ui->pushButton_2->setEnabled(1);
+    ui->pushButton_3->setEnabled(1);
+    ui->pushButton_5->setEnabled(1);
+    ui->pushButton_4->setEnabled(0);
 }

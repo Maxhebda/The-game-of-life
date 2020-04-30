@@ -158,3 +158,15 @@ unsigned int Board::getCycleCounter()
 {
     return cycleCounter;
 }
+
+void Board::loadObject(unsigned short i, unsigned short j, unsigned short int y,  unsigned short int x, unsigned short int * m)
+{
+    for (unsigned short int a=0; a<y;a++)
+    {
+        for (unsigned short int b=0; b<x;b++)
+        {
+           set(i+a,j+b,m[x*a+b]);
+        }
+    }
+
+}

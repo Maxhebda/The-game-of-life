@@ -18,11 +18,12 @@ public:
     unsigned int getCycleCounter();
     unsigned short int mostNeigbors(QVector<unsigned short int>);
     QVector<unsigned short int> neighbors(unsigned short int i, unsigned short int j);
+    void loadObject(unsigned short int i, unsigned short int j, unsigned short int y, unsigned short x, unsigned short int *);  //x,y - size object
+
 private:
     OneCell cell[100][100];
     unsigned int populationCounter;
     unsigned int cycleCounter;
-
 };
 
 #endif // BOARD_H

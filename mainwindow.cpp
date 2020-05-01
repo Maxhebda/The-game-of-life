@@ -76,6 +76,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_3_clicked()          // generate life
 {
+    ui->spinBox->setEnabled(0);
     ui->pushButton->setEnabled(1);
     ui->pushButton_3->setEnabled(0);
     ui->pushButton_2->setEnabled(1);
